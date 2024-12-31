@@ -19,7 +19,7 @@ pub struct UserInfo{
 pub struct User{
     pub token: String,
     pub user: UserInfo,
-    pub status: Status
+    pub status: Option<Status>
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -72,7 +72,7 @@ impl User{
             Ok(user_info_json)
         } 
 
-        pub async fn get_status(client: Client, token: &str) -> Result<Status, Error>{
+        pub async fn get_status(client: Client, token: &str) -> Result<Option<Status>, Error>{
             let mut headers = HeaderMap::new();
 
             headers.insert("authorization", HeaderValue::from_str(&token).unwrap());
@@ -83,11 +83,12 @@ impl User{
                 .send()
                 .await?;
 
-            let user_settings_json:Status = user_settings_req.json().await?;
+            let user_settings_json:Option<Status> = user_settings_req.json().await?;
+
             Ok(user_settings_json)
         }
 
-        pub async fn change_status(client: Client, token: String, new_status: Status) -> Result<Status, Error>{
+        pub async fn change_status(client: Client, token: String, new_status: Status) -> Result<Option<Status>, Error>{
             let mut headers = HeaderMap::new();
 
             headers.insert("authorization", HeaderValue::from_str(&token).unwrap());
