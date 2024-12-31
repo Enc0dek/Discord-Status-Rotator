@@ -28,14 +28,16 @@ async fn main() {
                         match api::User::change_status( client.clone(), config.token.clone(), config.status_list[index].clone() ).await {
                             Ok(result) => {
                                 if let Some(status) = result {
-                                    println!(
-                                        "[Update] Status: {} | Text: {} | Expires at: {} | Emoji Id: {} | Emoji Name: {}",
-                                        status.status,
-                                        status.custom_status.text.unwrap_or_else(|| "❌".to_string()),
-                                        status.custom_status.expires_at.unwrap_or_else(|| "❌".to_string()),
-                                        status.custom_status.emoji_id.unwrap_or_else(|| "❌".to_string()),
-                                        status.custom_status.emoji_name.unwrap_or_else(|| "❌".to_string())
-                                    );
+                                    if let Some(custom_status) = status.custom_status{
+                                        println!(
+                                            "[Update] Status: {} | Text: {} | Expires at: {} | Emoji Id: {} | Emoji Name: {}",
+                                            status.status,
+                                            custom_status.text.unwrap_or_else(|| "❌".to_string()),
+                                            custom_status.expires_at.unwrap_or_else(|| "❌".to_string()),
+                                            custom_status.emoji_id.unwrap_or_else(|| "❌".to_string()),
+                                            custom_status.emoji_name.unwrap_or_else(|| "❌".to_string())
+                                        );
+                                    }
                                 }
                             }
                             Err(e) => {

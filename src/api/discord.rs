@@ -33,7 +33,7 @@ pub struct CustomStatus{
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Status {
     pub status: String,
-    pub custom_status: CustomStatus,
+    pub custom_status: Option<CustomStatus>,
 }
 
 impl User{
