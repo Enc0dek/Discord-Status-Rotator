@@ -39,6 +39,7 @@ async fn main() {
                                 }
                             }
                             Err(e) => {
+                                sleep(Duration::from_secs(config.retry_time)).await;
                                 eprintln!("Failed to change status: {}", e);
                             }
                         }
